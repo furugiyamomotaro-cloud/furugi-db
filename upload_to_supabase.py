@@ -1,20 +1,19 @@
-import os
 from supabase import create_client
+import os
 
-# GitHubに隠した合鍵を呼び出す
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
+
+if not url or not key:
+    raise Exception("SUPABASE_URL または SUPABASE_KEY が未設定")
+
 supabase = create_client(url, key)
 
-# テスト用のデータ（あとで本物のスクレイピングデータに変えられます）
 data = {
-    "source_id": "test_001",
-    "title": "テスト商品",
-    "price": 1000,
-    "brand": "ナイキ",
-    "sold": False
+    "name": "test",
+    "price": 1000
 }
 
-# Supabaseの「商品」テーブルに保存
-response = supabase.table("items").upsert(data).execute()
-print("データを送信しました！")
+res = supabase.table("items").insert(data).execute()
+
+print(res)
