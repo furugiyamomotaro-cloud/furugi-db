@@ -1,18 +1,19 @@
 name: Update DB
 
 on:
-  workflow_dispatch: # 手動で動かすためのスイッチ
+  workflow_dispatch: # これで「Run workflow」ボタンが出るよ
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4  # ←ここを v4 にしたよ（新しい道具）
-      - uses: actions/setup-python@v5 # ←ここを v5 にしたよ（新しい道具）
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - run: pip install -r requirements.txt
-      - name: Run upload
+      - name: 道具を準備する
+        run: pip install pandas supabase
+      - name: データを運ぶ（本番！）
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
